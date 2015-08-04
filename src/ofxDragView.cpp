@@ -8,38 +8,58 @@
 
 #include "ofxDragView.h"
 
-ofxDragView::ofxDragView()
+
+ofxDragView::ofxDragView(int x, int y, int w, int h)
 {
-    enableMouseEvents();
+    setup(x, y, w, h);
 }
 
-void ofxDragView::update()
+void ofxDragView::setup(int x, int y, int w, int h)
 {
-    if (onPressed)
-    {
-        this->x = ofGetMouseX() - saveX;    // update x position
-        this->y = ofGetMouseY() - saveY;    // update mouse y position
-    }
+    disableAllEvents();
+//    enableAppEvents();
+    enableMouseEvents();
+    set(x, y, w, h);
 }
+
+
+
 
 void ofxDragView::onPress(int x, int y, int button)
 {
     // save the offset of where the mouse was clicked...
     // ...relative to the position of the object
-    saveX = x - this->x;
-    saveY = y - this->y;
+    saveX = this->x - x;
+    saveY = this->y - y;
     onPressed = true;
 }
 
-void ofxDragView::onRelease(int x, int y, int button)
-{
+void ofxDragView::onPressOutside(int x, int y, int button){
     onPressed = false;
 }
+
+void ofxDragView::onRelease(int x, int y, int button){
+    onPressed = false;
+}
+void ofxDragView::onReleaseOutside(int x, int y, int button){
+    onPressed = false;
+}
+
+
+void ofxDragView::mouseDragged(int x, int y, int button)
+{
+    if(onPressed)
+    {
+        this->x = x + saveX;
+        this->y = y + saveY;
+    }
+}
+
 
 void ofxDragView::begin()
 {
     ofPushMatrix();
-    ofTranslate(getPosition());
+    ofTranslate(getPositionRef());
 }
 
 void ofxDragView::end()

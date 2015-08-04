@@ -17,10 +17,16 @@ protected:
     int saveX, saveY;
     
 public:
-    ofxDragView();
-    virtual void update();
+    ofxDragView(){}
+    ofxDragView(int x, int y, int w, int h);
+    virtual void setup(int x, int y, int w, int h);
+    
     virtual void onPress(int x, int y, int button);
-    virtual void onRelease(int x, int y, int button);    
+    virtual void onPressOutside(int x, int y, int button);
+    virtual void onRelease(int x, int y, int button);
+    virtual void onReleaseOutside(int x, int y, int button);
+    virtual void mouseDragged(int x, int y, int button);
+
     void begin();
     void end();
 };
